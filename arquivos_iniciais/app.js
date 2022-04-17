@@ -8,6 +8,16 @@ class Despesa{
         this.descricao = descricao
         this.valor = valor
     }
+
+    //percorrer os valores para ver se são válidos
+    validarDados(){
+        for(let i in this){
+            if(this[i] == undefined || this[i] == '' || this[i] == null){
+                return false
+            }
+        }
+        return true
+    }
 }
 
 //colocando os dados no localStorage e transformando o dado em JSON
@@ -60,8 +70,31 @@ function cadastrarDespesa(){
         valor.value
     )
 
-    //função que vai armazenar no local storage
-    bd.gravar(despesa)
+    if(despesa.validarDados()){
+        //função que vai armazenar no local storage
+        bd.gravar(despesa)
+
+        document.getElementById('modal_titulo').innerHTML = 'Registro inserido com sucesso'
+        document.getElementById('modal_titulo_div').className = 'modal-header text-success'
+        document.getElementById('modal_conteudo').innerHTML = 'Despesa foi cadastrada com sucesso'
+        document.getElementById('modal_btn').innerHTML = 'voltar'
+        document.getElementById('modal_btn').className = 'btn btn-success'
+        
+
+        //dialog de sucesso
+        $('#modalRegistraDespesa').modal('show')   
+    } else{
+        //dialog de erro
+
+        document.getElementById('modal_titulo').innerHTML = 'Erro na inclusão do registro'
+        document.getElementById('modal_titulo_div').className = 'modal-header text-danger'
+        document.getElementById('modal_conteudo').innerHTML = 'Erro na gravação,verifique se os campos foram preenchidos'
+        document.getElementById('modal_btn').innerHTML = 'voltar e corrigir'
+        document.getElementById('modal_btn').className = 'btn btn-danger'
+
+        $('#modalRegistraDespesa').modal('show')
+    }
+
 }
 
 
